@@ -16,17 +16,6 @@ app.use(express.json());
 app.use('/',uploadRoutes );
 
 
-// get images from getApi which are stored in database
-
-app.get('/', async (req, res) => {
-  try {
-    const files = await require('../models/File').find().sort({ uploadDate: -1 });
-    res.status(200).json({ files });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to fetch files', error: err.message });
-  }
-});
-
 
 
 app.listen(port, () => {

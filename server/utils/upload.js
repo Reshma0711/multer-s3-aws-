@@ -3,14 +3,16 @@ const { Upload } = require("@aws-sdk/lib-storage");
 const dotenv = require("dotenv");
 dotenv.config();
 
+// const s3 = new S3Client({
+//   region: process.env.AWS_S3_BUCKET_REGION,
+//   credentials: {
+//     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+//     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+//   },
+// });
 const s3 = new S3Client({
   region: process.env.AWS_S3_BUCKET_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  },
 });
-
 
 const uploadToS3 = async (file) => {
   const key = `${Date.now()}-${file.originalname}`;
@@ -22,7 +24,7 @@ const uploadToS3 = async (file) => {
       Key: key,
       Body: file.buffer,
       ContentType: file.mimetype,
-      ACL: "public-read",
+      // ACL: "public-read",
     },
   });
 
@@ -30,8 +32,15 @@ const uploadToS3 = async (file) => {
 
   return {
     key,
-    url: result.Location || `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_S3_BUCKET_REGION}.amazonaws.com/${key}`,
+    url:
+      result.Location ||
+      `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_S3_BUCKET_REGION}.amazonaws.com/${key}`,
   };
 };
 
-module.exports = uploadToS3;
+const getData = async (command) => {
+  const response = await s3.send(command);
+  return response;
+};
+
+module.exports = { uploadToS3, getData };

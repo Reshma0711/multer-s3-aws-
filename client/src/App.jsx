@@ -1,15 +1,13 @@
-
-import './App.css'
-import UploadImages from './pages/uploadimage'
+import "./App.css";
+import ImageGallery from "./pages/uploadimage";
 
 function App() {
- 
   return (
     <div>
       <h1>Image Upload</h1>
-      <UploadImages/>
+      <ImageGallery/>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
